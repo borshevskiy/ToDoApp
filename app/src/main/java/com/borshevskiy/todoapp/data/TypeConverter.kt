@@ -1,6 +1,7 @@
 package com.borshevskiy.todoapp.data
 
 import androidx.room.TypeConverter
+import com.borshevskiy.todoapp.data.models.Priority
 
 class TypeConverter {
 
