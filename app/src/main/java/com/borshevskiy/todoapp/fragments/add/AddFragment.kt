@@ -1,15 +1,14 @@
 package com.borshevskiy.todoapp.fragments.add
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.borshevskiy.todoapp.R
-import com.borshevskiy.todoapp.data.models.Priority
 import com.borshevskiy.todoapp.data.models.ToDoData
+import com.borshevskiy.todoapp.data.viewmodel.SharedViewModel
 import com.borshevskiy.todoapp.data.viewmodel.ToDoViewModel
 import com.borshevskiy.todoapp.databinding.FragmentAddBinding
 
@@ -19,24 +18,22 @@ class AddFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var toDoViewModel: ToDoViewModel
+    private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
+        toDoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
         super.onCreate(savedInstanceState)
-        toDoViewModel = ViewModelProvider(this)[ToDoViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentAddBinding.inflate(inflater,container,false)
         setHasOptionsMenu(true)
         return binding.root
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -55,9 +52,9 @@ class AddFragment : Fragment() {
             val title = titleEt.text.toString()
             val priority = prioritiesSpinner.selectedItem.toString()
             val description = descriptionEt.text.toString()
-            val validation = verifyDataFromUser(title, description)
+            val validation = sharedViewModel.verifyDataFromUser(title, description)
             if (validation) {
-                toDoViewModel.insertData(ToDoData(0,title, parsePriority(priority),description))
+                toDoViewModel.insertData(ToDoData(0,title, sharedViewModel.parsePriority(priority),description))
                 Toast.makeText(requireContext(),"Successfully added!", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_addFragment_to_listFragment)
             } else {
@@ -66,18 +63,8 @@ class AddFragment : Fragment() {
         }
     }
 
-    private fun verifyDataFromUser(title: String, description: String): Boolean {
-        return if(TextUtils.isEmpty(title) || TextUtils.isEmpty(description)) {
-            return false
-        } else !(title.isEmpty() || description.isEmpty())
-    }
-
-    private fun parsePriority(priority: String): Priority {
-        return when(priority) {
-            "High Priority" -> {Priority.HIGH}
-            "Medium Priority" -> {Priority.MEDIUM}
-            "Low Priority" -> {Priority.LOW}
-            else -> Priority.LOW
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
