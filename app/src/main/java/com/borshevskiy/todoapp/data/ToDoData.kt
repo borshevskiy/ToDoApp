@@ -2,8 +2,9 @@ package com.borshevskiy.todoapp.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.borshevskiy.todoapp.utils.Constants.Companion.TODO_TABLE
 
-@Entity(tableName = "todo_table")
+@Entity(tableName = TODO_TABLE)
 data class ToDoData(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
