@@ -30,9 +30,9 @@ class AddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentAddBinding.inflate(inflater,container,false)
         setHasOptionsMenu(true)
+        binding.prioritiesSpinner.onItemSelectedListener = sharedViewModel.listener
         return binding.root
     }
 
