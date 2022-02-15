@@ -20,9 +20,15 @@ class ListFragment : Fragment() {
     ): View {
         _binding = FragmentListBinding.inflate(inflater,container,false)
 
-        binding.floatingActionButton.setOnClickListener {
-            findNavController().navigate(R.id.action_listFragment_to_addFragment)
+        with(binding) {
+            floatingActionButton.setOnClickListener {
+                findNavController().navigate(R.id.action_listFragment_to_addFragment)
+            }
+            listLayout.setOnClickListener {
+                findNavController().navigate(R.id.action_listFragment_to_updateFragment)
+            }
         }
+
         
         return binding.root
     }
