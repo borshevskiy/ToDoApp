@@ -10,6 +10,9 @@ interface ToDoDao {
     @Query("SELECT * FROM todo_table ORDER BY id ASC")
     fun getAllData(): LiveData<List<ToDoData>>
 
+    @Query("DELETE FROM todo_table")
+    suspend fun deleteAll()
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertData(toDoData: ToDoData)
 
@@ -18,5 +21,4 @@ interface ToDoDao {
 
     @Delete
     suspend fun deleteData(toDoData: ToDoData)
-
 }
