@@ -50,5 +50,13 @@ class SharedViewModel @Inject constructor(application: Application): AndroidView
         }
     }
 
+    fun parsePriorityToInt(priority: Priority): Int {
+        return when(priority) {
+            Priority.HIGH -> 0
+            Priority.MEDIUM -> 0
+            Priority.LOW -> 0
+        }
+    }
+
 
 }

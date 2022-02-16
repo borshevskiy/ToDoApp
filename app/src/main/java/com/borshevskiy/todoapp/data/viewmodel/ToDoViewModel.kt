@@ -23,4 +23,10 @@ class ToDoViewModel @Inject constructor(
             repository.insertData(toDoData)
         }
     }
+
+    fun updateData(toDoData: ToDoData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateData(toDoData)
+        }
+    }
 }
