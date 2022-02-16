@@ -3,6 +3,7 @@ package com.borshevskiy.todoapp.fragments.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.borshevskiy.todoapp.R
 import com.borshevskiy.todoapp.data.models.Priority
@@ -32,6 +33,10 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
                     context, R.color.yellow))
                 Priority.LOW -> priorityIndicator.setCardBackgroundColor(ContextCompat.getColor(
                     context, R.color.green))
+            }
+            rowBackground.setOnClickListener {
+                val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentData)
+                rowBackground.findNavController().navigate(action)
             }
         }
     }

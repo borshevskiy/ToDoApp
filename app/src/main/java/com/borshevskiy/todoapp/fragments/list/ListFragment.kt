@@ -34,13 +34,8 @@ class ListFragment : Fragment() {
         toDoViewModel.getAllData.observe(viewLifecycleOwner, Observer {
             mAdapter.setData(it)
         })
-        with(binding) {
-            floatingActionButton.setOnClickListener {
-                findNavController().navigate(R.id.action_listFragment_to_addFragment)
-            }
-            listLayout.setOnClickListener {
-                findNavController().navigate(R.id.action_listFragment_to_updateFragment)
-            }
+        binding.floatingActionButton.setOnClickListener {
+            findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
         setHasOptionsMenu(true)
         return binding.root
