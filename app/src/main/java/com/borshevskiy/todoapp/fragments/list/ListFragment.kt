@@ -1,6 +1,7 @@
 package com.borshevskiy.todoapp.fragments.list
 
 import android.app.AlertDialog
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -20,9 +21,11 @@ class ListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var toDoViewModel: ToDoViewModel
+    private lateinit var sharedViewModel: SharedViewModel
     private val mAdapter by lazy { ListAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
         toDoViewModel = ViewModelProvider(requireActivity())[ToDoViewModel::class.java]
         super.onCreate(savedInstanceState)
     }
@@ -33,8 +36,12 @@ class ListFragment : Fragment() {
     ): View {
         _binding = FragmentListBinding.inflate(inflater,container,false)
         setupRecyclerView()
-        toDoViewModel.getAllData.observe(viewLifecycleOwner, Observer {
+        toDoViewModel.getAllData.observe(viewLifecycleOwner, {
+            sharedViewModel.checkIfDatabaseEmpty(it)
             mAdapter.setData(it)
+        })
+        sharedViewModel.emptyDatabase.observe(viewLifecycleOwner, {
+            showEmptyDatabaseViews(it)
         })
         binding.floatingActionButton.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_addFragment)
@@ -64,6 +71,18 @@ class ListFragment : Fragment() {
         binding.recyclerView.apply {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    private fun showEmptyDatabaseViews(emptyDatabase: Boolean) {
+        with(binding) {
+            if (emptyDatabase) {
+                noDataImageView.visibility = View.VISIBLE
+                noDataTextView.visibility = View.VISIBLE
+            } else {
+                noDataImageView.visibility = View.INVISIBLE
+                noDataTextView.visibility = View.INVISIBLE
+            }
         }
     }
 
