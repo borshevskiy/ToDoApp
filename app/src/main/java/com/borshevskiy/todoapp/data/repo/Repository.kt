@@ -19,5 +19,7 @@ class Repository @Inject constructor(private val toDoDao: ToDoDao) {
         toDoDao.updateData(toDoData)
     }
 
-
+    suspend fun deleteData(toDoData: ToDoData) {
+        toDoDao.deleteData(toDoData)
+    }
 }
