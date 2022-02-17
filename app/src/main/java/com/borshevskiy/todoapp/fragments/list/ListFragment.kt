@@ -17,6 +17,7 @@ import com.borshevskiy.todoapp.data.viewmodel.ToDoViewModel
 import com.borshevskiy.todoapp.databinding.FragmentListBinding
 import com.borshevskiy.todoapp.fragments.list.adapter.ListAdapter
 import com.google.android.material.snackbar.Snackbar
+import jp.wasabeef.recyclerview.animators.LandingAnimator
 
 class ListFragment : Fragment() {
 
@@ -75,6 +76,7 @@ class ListFragment : Fragment() {
         recyclerView.apply {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(context)
+            itemAnimator = LandingAnimator().apply { addDuration = 300 }
         }
         swipeToDelete(recyclerView)
     }
