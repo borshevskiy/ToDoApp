@@ -1,4 +1,4 @@
-package com.borshevskiy.todoapp.fragments.list
+package com.borshevskiy.todoapp.fragments.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,10 +9,11 @@ import com.borshevskiy.todoapp.R
 import com.borshevskiy.todoapp.data.models.Priority
 import com.borshevskiy.todoapp.data.models.ToDoData
 import com.borshevskiy.todoapp.databinding.RowLayoutBinding
+import com.borshevskiy.todoapp.fragments.list.ListFragmentDirections
 
 class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
-    private var dataList = emptyList<ToDoData>()
+    var dataList = emptyList<ToDoData>()
 
     class MyViewHolder(val binding: RowLayoutBinding): RecyclerView.ViewHolder(binding.root)
 
