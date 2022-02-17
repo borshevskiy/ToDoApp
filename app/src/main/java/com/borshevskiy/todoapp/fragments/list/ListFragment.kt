@@ -16,6 +16,7 @@ import com.borshevskiy.todoapp.data.viewmodel.SharedViewModel
 import com.borshevskiy.todoapp.data.viewmodel.ToDoViewModel
 import com.borshevskiy.todoapp.databinding.FragmentListBinding
 import com.borshevskiy.todoapp.fragments.list.adapter.ListAdapter
+import com.google.android.material.snackbar.Snackbar
 
 class ListFragment : Fragment() {
 
@@ -81,13 +82,22 @@ class ListFragment : Fragment() {
     private fun swipeToDelete(recyclerView: RecyclerView) {
         val swipeToDeleteCallback = object : SwipeToDelete() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val itemToDelete = mAdapter.dataList[viewHolder.adapterPosition]
-                toDoViewModel.deleteData(itemToDelete)
-                Toast.makeText(requireContext(),"Successfully removed: '${itemToDelete.title}'", Toast.LENGTH_SHORT).show()
-//                confirmRemoveItemBySwipe(itemToDelete)
+                val deletedItem = mAdapter.dataList[viewHolder.adapterPosition]
+                toDoViewModel.deleteData(deletedItem)
+                mAdapter.notifyItemRemoved(viewHolder.adapterPosition)
+                restoreDeletedData(binding.recyclerView,deletedItem,viewHolder.adapterPosition)
             }
         }
         ItemTouchHelper(swipeToDeleteCallback).attachToRecyclerView(recyclerView)
+    }
+
+    private fun restoreDeletedData(view: View, deletedItem: ToDoData, position: Int) {
+        val snackBar = Snackbar.make(view,"Deleted '${deletedItem.title}'",Snackbar.LENGTH_LONG)
+        snackBar.setAction("Undo") {
+            toDoViewModel.insertData(deletedItem)
+            mAdapter.notifyItemChanged(position)
+        }
+        snackBar.show()
     }
 
     private fun showEmptyDatabaseViews(emptyDatabase: Boolean) {
@@ -113,17 +123,4 @@ class ListFragment : Fragment() {
         builder.setMessage("Are you sure want to remove everything?")
         builder.create().show()
     }
-
-//    private fun confirmRemoveItemBySwipe(itemToDelete: ToDoData) {
-//        val builder = AlertDialog.Builder(requireContext())
-//        builder.setPositiveButton("Yes") {_,_ ->
-//            toDoViewModel.deleteData(itemToDelete)
-//        }
-//        builder.setNegativeButton("No") {_,_ ->
-//            setupRecyclerView()
-//        }
-//        builder.setTitle("Delete '${itemToDelete.title}'?")
-//        builder.setMessage("Are you sure want to remove '${itemToDelete.title}'?")
-//        builder.create().show()
-//    }
 }
