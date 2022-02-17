@@ -41,4 +41,8 @@ class ToDoViewModel @Inject constructor(
             repository.deleteAll()
         }
     }
+
+    fun searchDatabase(searchQuery: String): LiveData<List<ToDoData>> {
+        return repository.searchDatabase(searchQuery)
+    }
 }
