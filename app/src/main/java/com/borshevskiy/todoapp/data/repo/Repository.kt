@@ -1,6 +1,7 @@
 package com.borshevskiy.todoapp.data.repo
 
 import androidx.lifecycle.LiveData
+import androidx.room.Query
 import com.borshevskiy.todoapp.data.ToDoDao
 import com.borshevskiy.todoapp.data.models.ToDoData
 import dagger.hilt.android.scopes.ActivityRetainedScoped
@@ -10,6 +11,8 @@ import javax.inject.Inject
 class Repository @Inject constructor(private val toDoDao: ToDoDao) {
 
     val getAllData: LiveData<List<ToDoData>> = toDoDao.getAllData()
+    val sortByHighPriority: LiveData<List<ToDoData>> = toDoDao.sortByHighPriority()
+    val sortByLowPriority: LiveData<List<ToDoData>> = toDoDao.sortByLowPriority()
 
     suspend fun insertData(toDoData: ToDoData) {
         toDoDao.insertData(toDoData)
@@ -27,7 +30,5 @@ class Repository @Inject constructor(private val toDoDao: ToDoDao) {
         toDoDao.deleteAll()
     }
 
-    fun searchDatabase(searchQuery: String): LiveData<List<ToDoData>> {
-        return toDoDao.searchDatabase(searchQuery)
-    }
+    fun searchDatabase(searchQuery: String): LiveData<List<ToDoData>> = toDoDao.searchDatabase(searchQuery)
 }
