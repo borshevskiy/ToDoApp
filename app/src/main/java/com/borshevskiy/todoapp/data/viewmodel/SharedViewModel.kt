@@ -41,9 +41,7 @@ class SharedViewModel @Inject constructor(application: Application): AndroidView
     }
 
     fun verifyDataFromUser(title: String, description: String): Boolean {
-        return if(TextUtils.isEmpty(title) || TextUtils.isEmpty(description)) {
-            return false
-        } else !(title.isEmpty() || description.isEmpty())
+        return !(title.isEmpty() || description.isEmpty())
     }
 
     fun parsePriority(priority: String): Priority {
@@ -65,6 +63,4 @@ class SharedViewModel @Inject constructor(application: Application): AndroidView
             Priority.LOW -> 0
         }
     }
-
-
 }
