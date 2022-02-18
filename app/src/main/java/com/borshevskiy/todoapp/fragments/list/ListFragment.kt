@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.borshevskiy.todoapp.R
 import com.borshevskiy.todoapp.data.models.ToDoData
 import com.borshevskiy.todoapp.data.viewmodel.SharedViewModel
@@ -84,7 +85,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         val recyclerView = binding.recyclerView
         recyclerView.apply {
             adapter = mAdapter
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
             itemAnimator = LandingAnimator().apply { addDuration = 300 }
         }
         swipeToDelete(recyclerView)
